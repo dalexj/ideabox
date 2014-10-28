@@ -22,7 +22,7 @@ class IdeaStore
   end
 
   def delete(id)
-    ideas.reject! { |idea| idea.id.to_i == id.to_i}
+    ideas.reject! { |idea| idea.id.to_i == id.to_i }
     save
   end
 
