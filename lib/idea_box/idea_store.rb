@@ -16,7 +16,7 @@ class IdeaStore
   end
 
   def create(data)
-    data["id"] = data["id"] || find_next_id
+    data["id"] ||= find_next_id
     ideas << Idea.new(data)
     save
   end

@@ -9,7 +9,6 @@ class IdeaBoxApp < Sinatra::Base
   set :root, "lib/app"
   idea_store = IdeaStore.new
 
-
   not_found do
     erb :error
   end
@@ -24,12 +23,11 @@ class IdeaBoxApp < Sinatra::Base
   end
 
   get '/:id/edit' do |id|
-    idea = idea_store.find(id.to_i)
-    erb :edit, locals: {idea: idea}
+    erb :edit, locals: {idea: idea_store.find(id)}
   end
 
   put '/:id' do |id|
-    idea_store.update(id.to_i, params[:idea])
+    idea_store.update(id, params[:idea])
     redirect '/'
   end
 
@@ -39,7 +37,7 @@ class IdeaBoxApp < Sinatra::Base
   end
 
   post '/:id/like' do |id|
-    idea = idea_store.find(id.to_i)
+    idea = idea_store.find(id)
     idea.like!
     idea_store.update(id.to_i, idea.to_h)
     redirect '/'
