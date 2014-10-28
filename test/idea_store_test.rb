@@ -37,6 +37,12 @@ class IdeaTest < Minitest::Test
     refute idea_store.find("7")
   end
 
+  def test_deletes_by_id
+    idea_store.create("title" => "test_title", "description" => "test_description", "id" => 87)
+    idea_store.delete("87")
+    assert_equal 0, idea_store.all.size
+  end
+
   def teardown
     File.delete TEST_PATH if File.exist? TEST_PATH
   end
