@@ -1,55 +1,50 @@
 require 'yaml/store'
 
 class IdeaStore
-  def self.all
-    ideas = []
-    raw_ideas.each_with_index do |data, i|
-      ideas << Idea.new(data.merge("id" => i))
-    end
+  attr_reader :ideas, :database
+  def initialize
+    @database = YAML::Store.new('db/ideabox')
+    read
+  end
+
+  def all
     ideas
   end
 
-  def self.find(id)
-    Idea.new(find_raw_idea(id))
+  def find(id)
+    ideas.find { |idea| idea.id.to_i == id.to_i }
   end
 
-  def self.create(data)
+  def create(data)
+    data["id"] = data["id"] || find_next_id
+    ideas << Idea.new(data)
+    save
+  end
+
+  def delete(id)
+    ideas.reject! { |idea| idea.id.to_i == id.to_i}
+    save
+  end
+
+  def update(id, data)
+    delete(id)
+    create(data)
+  end
+
+  def save
     database.transaction do
-      database['ideas'] << data
+      database['ideas'] = ideas.map(&:to_h)
     end
   end
 
-  def self.database
-    return @database if @database
-
-    @database = YAML::Store.new('db/ideabox')
-    @database.transaction do
-      @database['ideas'] ||= []
-    end
-    @database
-  end
-
-  def self.raw_ideas
-    database.transaction do |db|
-      db['ideas'] || []
-    end
-  end
-
-  def self.delete(position)
+  def read
     database.transaction do
-      database['ideas'].delete_at(position)
+      @ideas = (database['ideas'] || []).map { |data| Idea.new(data) }
     end
   end
 
-  def self.find_raw_idea(id)
-    database.transaction do
-      database['ideas'].at(id)
-    end
-  end
-
-  def self.update(id, data)
-    database.transaction do
-      database['ideas'][id] = data
-    end
+  def find_next_id
+    return 1 if ideas.empty?
+    ideas.map(&:id).map(&:to_i).max.next
   end
 end
