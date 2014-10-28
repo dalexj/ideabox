@@ -2,8 +2,8 @@ require 'yaml/store'
 
 class IdeaStore
   attr_reader :ideas, :database
-  def initialize
-    @database = YAML::Store.new('db/ideabox')
+  def initialize(path = "db/ideabox")
+    @database = YAML::Store.new path
     read
   end
 
