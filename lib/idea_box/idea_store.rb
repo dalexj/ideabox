@@ -3,7 +3,7 @@ require 'yaml/store'
 class IdeaStore
   attr_reader :ideas, :database
   def initialize(path = "db/ideabox")
-    File.open(path, "w") {}
+    File.open(path, "w") {} unless File.exists? path
     @database = YAML::Store.new path
     read
   end
@@ -16,8 +16,14 @@ class IdeaStore
     ideas.find { |idea| idea.id.to_i == id.to_i }
   end
 
+  def select_tag(tag)
+    return all unless tag
+    ideas.select { |idea| idea.tags.include? tag }
+  end
+
   def create(data)
     data["id"] ||= find_next_id
+    data["tags"] = data["tags"].strip.split " " if data["tags"].is_a? String
     ideas << Idea.new(data)
     save
   end

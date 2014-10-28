@@ -1,11 +1,12 @@
 class Idea
   include Comparable
-  attr_reader :title, :description, :rank, :id
+  attr_reader :title, :description, :rank, :id, :tags
   def initialize(data = {})
     @title = data["title"]
     @description = data["description"]
     @rank = data["rank"] || 0
     @id = data["id"]
+    @tags = data["tags"]
   end
 
   def to_h
@@ -13,7 +14,8 @@ class Idea
       "title" => title,
       "description" => description,
       "rank" => rank,
-      "id" => id
+      "id" => id,
+      "tags" => tags
     }
   end
 

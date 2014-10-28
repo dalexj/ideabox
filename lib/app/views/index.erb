@@ -4,9 +4,14 @@
     <p>
       Your Idea:
     </p>
-    <input type='text' name='idea[title]'/><br/>
-    <textarea name='idea[description]'></textarea><br/>
+    <input type='text' name='idea[title]' required="true"/><br/>
+    <textarea name='idea[description]' required="true"></textarea><br/>
+    Tags: <input type="text" name="idea[tags]" value="">
     <input type='submit'/>
+  </form>
+  <form action="/" method="GET">
+    Search By Tag<input type="text" name="tag">
+    <input type="submit">
   </form>
   <h3>Existing Ideas</h3>
   <ul>

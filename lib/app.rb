@@ -1,9 +1,6 @@
 require_relative 'idea_box'
 
 class IdeaBoxApp < Sinatra::Base
-  configure :development do
-    register Sinatra::Reloader
-  end
 
   set :method_override, true
   set :root, "lib/app"
@@ -14,7 +11,7 @@ class IdeaBoxApp < Sinatra::Base
   end
 
   get '/' do
-    erb :index, locals: {ideas: idea_store.all.sort}
+    erb :index, locals: {ideas: idea_store.select_tag(params["tag"]).sort}
   end
 
   post '/' do
