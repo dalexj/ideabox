@@ -3,6 +3,7 @@ require 'yaml/store'
 class IdeaStore
   attr_reader :ideas, :database
   def initialize(path = "db/ideabox")
+    File.open(path, "w") {}
     @database = YAML::Store.new path
     read
   end
@@ -24,11 +25,6 @@ class IdeaStore
   def delete(id)
     ideas.reject! { |idea| idea.id.to_i == id.to_i }
     save
-  end
-
-  def update(id, data)
-    delete(id)
-    create(data)
   end
 
   def save
