@@ -1,5 +1,5 @@
 require_relative 'test_helper'
-require_relative '../lib/idea_box/idea'
+require_relative '../lib/idea_box'
 
 class IdeaTest < Minitest::Test
   def test_defaults_rank_to_0
