@@ -1,33 +1,36 @@
-<body>
-  <h1>IdeaBox</h1>
-  <form action='/' method='POST'>
-    <p>
-      Your Idea:
-    </p>
-    <input type='text' name='idea[title]' required="true"/><br/>
-    <textarea name='idea[description]' required="true"></textarea><br/>
-    Tags: <input type="text" name="idea[tags]" value="">
-    <input type='submit'/>
-  </form>
-  <form action="/" method="GET">
-    Search By Tag<input type="text" name="tag">
-    <input type="submit">
-  </form>
-  <h3>Existing Ideas</h3>
-  <ul>
-    <% ideas.each do |idea| %>
-      <li>
-        <form action='/<%= idea.id %>/like' method='POST' style="display: inline">
-          <input type='submit' value="+"/>
-        </form>
-        <%= idea.title %><br/>
-        <%= idea.description %>
-        <a href="/<%= idea.id %>/edit">Edit</a>
-        <form action='/<%= idea.id %>' method='POST'>
-          <input type="hidden" name="_method" value="DELETE">
-          <input type='submit' value="delete"/>
-        </form>
-      </li>
-    <% end %>
-  </ul>
-</body>
+<h1>IdeaBox</h1>
+<form action='/' method='POST'>
+  <p>
+    Your Idea:
+  </p>
+  <input type='text' name='idea[title]' required="true"/><br/>
+  <textarea name='idea[description]' required="true"></textarea><br/>
+  <!-- Tags: <input type="text" name="idea[tags]" value=""> -->
+  <input type='submit'/>
+</form>
+Search<input class="search" type="text">
+</form>
+<h3>Existing Ideas</h3>
+<ul>
+  <% ideas.each do |idea| %>
+    <li>
+      <form action='/<%= idea.id %>/like' method='POST' style="display: inline">
+        <input type='submit' value="+"/>
+      </form>
+      <span class="idea-title"><%= idea.title %><br/></span>
+      <span class="idea-desc"><%= idea.description %></span>
+      <a href="/<%= idea.id %>/edit">Edit</a>
+      <form action='/<%= idea.id %>' method='POST'>
+        <input type="hidden" name="_method" value="DELETE">
+        <input type='submit' value="delete"/>
+      </form>
+    </li>
+  <% end %>
+</ul>
+<script charset="utf-8" type="text/javascript">
+  $('.search').on("keyup", function() {
+    $('li').hide().filter(function () {
+      return $(this).text().toLowerCase().indexOf($('.search').val().toLowerCase()) != -1;
+    }).show();
+  });
+</script>
