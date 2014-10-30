@@ -26,4 +26,9 @@ class Idea
   def <=>(other)
     other.rank <=> rank
   end
+
+  def update(updated_data)
+    @title = updated_data["title"]
+    @description = updated_data["description"]
+  end
 end

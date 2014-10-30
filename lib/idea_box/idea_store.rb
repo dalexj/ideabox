@@ -33,6 +33,10 @@ class IdeaStore
     save
   end
 
+  def update(id, updated_data)
+    find(id).update(updated_data)
+  end
+
   def save
     database.transaction do
       database['ideas'] = ideas.map(&:to_h)
